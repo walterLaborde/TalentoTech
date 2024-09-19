@@ -74,7 +74,7 @@ print()
 print("Lista de compras")
 print("================")
 print()
-print("* huevos \n* carne \n* queso \n* vino \n* ravioles \n* tomates")
+print("\thuevos\n\tcarne\n\tqueso\n\tvino\n\travioles\n\ttomates")
 print()
 print()
 
