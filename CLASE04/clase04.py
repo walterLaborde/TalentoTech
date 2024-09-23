@@ -1,3 +1,2 @@
-### PROYECTO INTEGRADOR ###
+### VER CARPETA PROYECTO INTEGRADOR ###
 
-# menú de ingreso
