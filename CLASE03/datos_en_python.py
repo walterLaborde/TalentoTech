@@ -30,3 +30,12 @@ print()
 print()
 print()
 
+
+### OPERADORES ###
+
+"""
+- Operador de asignación =
+- Expresiones y sentencias
+    Una expresión es una unidad de código que devuelve un valor y está formada por operandos y operadores
+- Operadores aritméticos : +, -, *, /, %, //, ** (potencia)    
+"""
