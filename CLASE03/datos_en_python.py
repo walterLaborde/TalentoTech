@@ -52,4 +52,16 @@ num1 = input("Ingrese un número: ")
 numero = float(num1)
 resultado = numero * 2
 print(numero,"x 2 =", resultado)
+print() 
+print() 
+print() 
+
+### ENTRADA, PROCESO, SALIDA ###
+
+numero1 = float(input("Ingresa el primer número: "))  # ENTRADA
+numero2 = float(input("Ingresa el segundo número: ")) # ENTRADA
+
+suma = numero1 + numero2                              # PROCESO
+
+print("La suma de",numero1,"y",numero2,"es",suma)     # SALIDA
 
