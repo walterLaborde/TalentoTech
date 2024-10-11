@@ -17,11 +17,12 @@ Tips:
 ● Recordá que input() siempre devuelve cadenas de caracteres.
 """
 
-validar_precio_producto = int(input("Ingrese el precio del producto: "))
+validar_precio_producto = int(input("\nIngrese el precio del producto: "))
 
 
 while validar_precio_producto <=0:
-    print("El precio ingresado no es válido. Debe ser mayor a cero")
-    validar_precio_producto = int(input("Ingrese nuevamenteel precio del producto: "))
+    print("\nEl precio ingresado no es válido. Debe ser mayor a cero")
+    validar_precio_producto = int(input("\nIngrese nuevamenteel precio del producto: "))
 
-print(f"El precio ingresado es {formato_moneda(validar_precio_producto)}")
+print(f"\nEl precio ingresado es {formato_moneda(validar_precio_producto)}")
+print()
