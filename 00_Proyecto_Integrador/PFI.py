@@ -21,9 +21,32 @@ opciones disponibles, y mecanismos (funciones) para el mantenimiento de los dato
      + Listado: Listado completo de los productos en la base de datos.
      + Reporte de Bajo Stock: Lista de productos con cantidad bajo mínimo.    
 
+Objetivos del PFI:
+    + Registro de productos: La aplicación va a permitir que la usuaria o usuario ingrese nuevos
+      productos en el inventario. Esto incluye detalles como el nombre del producto, la cantidad
+      disponible, el precio por unidad y cualquier otra información que sea relevante. Con el tiempo, 
+      vamos a aprender a organizar y guardar estos datos usando estructuras que te permitan mantener 
+      todo en orden.
+    + Consulta de productos: Nuestra clientela debe poder consultar el inventario, para ver
+      información detallada de cada producto, como cuántos quedan en stock o cuál es el precio.
+      Acá es donde la función print() se convierte en tu aliada, porque vas a aprender a mostrar
+      los datos de manera clara y estructurada, para que quien use tu aplicación pueda entender
+      fácilmente la información que está viendo.
+    + Actualización de productos: Si un o una cliente compra productos o si llega nueva
+      mercadería la aplicación va a necesitar reflejar esos cambios. La persona que use el
+      sistema podrá actualizar la cantidad disponible de cada producto, lo que implica que vamos
+      a desarrollar la lógica necesaria para buscar y modificar los datos en el sistema de manera
+      segura.
+    + Eliminación de productos: La tienda también puede decidir dejar de vender ciertos
+      productos, y ahí es donde entrás vos: el sistema que vas a construir tiene que permitir
+      eliminar productos del inventario sin que esto afecte el correcto funcionamiento de la
+      aplicación. Vamos a aprender a manejar estas situaciones sin problemas.
+    + Listado Completo y Reporte de Bajo Stock: Además de poder consultar productos de
+      forma particular, la aplicación será capaz de generar listados completos del inventario y,
+      algo muy útil, un reporte de productos con bajo stock. De esta manera, se podrá tomar
+      decisiones informadas sobre qué productos se necesita reponer. La claridad a la hora de
+      presentar la información va a ser fundamental acá.  
 """
-
-
 # Menú de opciones
 
 print("Menú de Gestión de Productos\n")

@@ -1,0 +1,11 @@
+/*
+# data/database.db:
+
+
+    Si usas SQLite, este archivo será tu base de datos. Si usas otro sistema (PostgreSQL, MySQL), 
+    podrías incluir un archivo .env o de configuración con los detalles de la conexión y, además
+    un archivo requirements.txt en la raíz del proyecto para la sesión virtual venv
+
+*/
+
+
