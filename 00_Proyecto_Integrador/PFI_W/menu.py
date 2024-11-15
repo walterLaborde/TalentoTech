@@ -10,3 +10,4 @@ def print_menu(): # Gestionará el menú interactivo que el usuario verá en la 
     print("5. Listado completo de los productos")
     print("6. Lista de productos con cantidad bajo mínimo")
     print("7. Salir")
+    
