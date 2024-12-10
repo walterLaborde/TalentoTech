@@ -8,7 +8,7 @@ def low_stock_report(threshold=5):
 # buscador de productos por product_id
 def product_lookup():
     product_id = int(input("Ingrese el id del producto buscado: "))
-    query = "SELECT product_id, name, stock from products WHERE product_id==?"
+    query = f"SELECT {product_id}, name, stock from products WHERE product_id==?"
     execute_query(query,product_id)
 
 # listado de productos
