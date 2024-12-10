@@ -14,21 +14,26 @@ Tips:
 ● Utilizá un bucle for y range() para recorrer los códigos e imprimirlos.
 
 """
-
+#inicio la lista donde voy a guardar los elementos, vacía.
 productos = []
 
+#utilizo un for con rango 4 para ingresar sólo 4 productos
 for n in range(4):
+    # pido al usuario que ingrese código y nombre de los 4 productos
     codigo_producto = input(f"Ingresar el código del producto {n + 1}: ")
     nombre_producto = input(f"Ingresar el nombre del producto {n + 1}: ")
 
+    # cada elemento de la lista es un diccionario con las claves: código y nombre
     productos.append({
         "Código" : codigo_producto,
         "Nombre" : nombre_producto
     })
 
 print()
+# agrego encabezados a la tabla
 print("\n{:9}{:15}".format("Código", "Nombre"))
 print("-" * 24)
+# recorro la lista de diccionarios, y cada diccionario es una fila de la tabla
 for producto in productos:  
     print("{:9}{:15}".format(producto["Código"], producto["Nombre"]))
 print()
