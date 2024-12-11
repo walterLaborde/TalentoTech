@@ -37,7 +37,9 @@ def solicitar_datos() -> tuple[float,float]:
             descuento = float(input("\nIngresa el porcentaje de descuento a realizar: "))
             if not (0 <= descuento < 100):
                 raise ValueError("El descuento debe estar entre 0 y 100")
+            
             return precio,descuento
+        
         except ValueError as e:
             print(f"{RED}Error: {e}{RESET}")
 
