@@ -114,7 +114,7 @@ def registrar_producto():
 
     return inventario
 
-def imprimir_inventario(inventario):
+def imprimir_inventario_actual(inventario):
     
     if not inventario:
         print(f"{RED} El inventario está vacío.{RESET}")

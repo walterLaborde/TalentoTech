@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from utils.colorama_config import CYAN,YELLOW,MAGENTA,LIGHT_RED,RED, GREEN, RESET
 
+from registrar_producto import imprimir_inventario_actual
 
 """
 
@@ -37,23 +38,20 @@ inventario_prueba = {
     }
 }
 
+inventario_vacio = dict()
+
+#imprime un inventario si existe, sino indica que está vacío
 def imprimir_inventario(inventario):
-    
     if not inventario:
         print(f"{RED} El inventario está vacío.{RESET}")
     else:
-        # impresión del encabezado
-        print(f"{GREEN}{'Código':<9}{'Nombre':30}{'Descripcion':50}{'Cantidad':10}{'Precio':10}{'Categoria':20}{RESET}")
-        print(f"{YELLOW}="*129)
-
-        # impresión de los datos
-        for codigo, producto in inventario.items():
-            print(f"{MAGENTA}{codigo:<9}{producto['nombre']:<30}{producto['descripcion']:<50}"
-                  f"{producto['cantidad']:<10}{producto['precio']:<10.2f}{producto['categoria']:<20}{RESET}")
+        imprimir_inventario_actual(inventario)
 
 
 def main():
     imprimir_inventario(inventario_prueba)
+    print()
+    imprimir_inventario(inventario_vacio)
 
 if __name__ == '__main__':
     main()

@@ -6,7 +6,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from utils.colorama_config import CYAN,YELLOW,MAGENTA,LIGHT_RED,RED, GREEN, RESET
 
-from CLASE12.02_mostrar_productos import inventario_prueba
+from mostrar_productos import inventario_prueba
 
 """
 En aplicaciones como la que estamos desarrollando, es necesario contar con una opción 
