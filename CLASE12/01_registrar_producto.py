@@ -115,14 +115,18 @@ def registrar_producto():
     return inventario
 
 def imprimir_inventario(inventario):
-    # impresión del encabezado
-    print(f"{GREEN}{'Código':<9}{'Nombre':30}{'Descripcion':50}{'Cantidad':10}{'Precio':10}{'Categoria':20}{RESET}")
-    print(f"{YELLOW}="*129)
+    
+    if not inventario:
+        print(f"{RED} El inventario está vacío.{RESET}")
+    else:
+        # impresión del encabezado
+        print(f"{GREEN}{'Código':<9}{'Nombre':30}{'Descripcion':50}{'Cantidad':10}{'Precio':10}{'Categoria':20}{RESET}")
+        print(f"{YELLOW}="*129)
 
-    # impresión de los datos
-    for codigo, producto in inventario.items():
-        print(f"{MAGENTA}{codigo:<9}{producto['nombre']:<30}{producto['descripcion']:<50}"
-              f"{producto['cantidad']:<10}{producto['precio']:<10.2f}{producto['categoria']:<20}{RESET}")
+        # impresión de los datos
+        for codigo, producto in inventario.items():
+            print(f"{MAGENTA}{codigo:<9}{producto['nombre']:<30}{producto['descripcion']:<50}"
+                  f"{producto['cantidad']:<10}{producto['precio']:<10.2f}{producto['categoria']:<20}{RESET}")
 
 # programa principal    
 def main():
