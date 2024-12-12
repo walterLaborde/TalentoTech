@@ -131,7 +131,7 @@ def imprimir_inventario_actual(inventario):
 # programa principal    
 def main():
     inventario_actual = registrar_producto()
-    imprimir_inventario(inventario_actual)
+    imprimir_inventario_actual(inventario_actual)
 
 
 if __name__ == "__main__":
