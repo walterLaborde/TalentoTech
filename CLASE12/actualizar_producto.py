@@ -6,7 +6,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from utils.colorama_config import CYAN,YELLOW,MAGENTA,LIGHT_RED,RED, GREEN, RESET
 
-from mostrar_productos import inventario_prueba
+from mostrar_productos import inventario_prueba, imprimir_inventario_actual
+from registrar_producto import ingreso_de_elemento
 
 """
 En aplicaciones como la que estamos desarrollando, es necesario contar con una opción 
@@ -24,9 +25,62 @@ Por supuesto, ¡puedes agregar todas las funcionalidades extra que consideres ne
 
 """
 
-
 # La función supone que se conoce el código del producto a actualizar.
 def actualizar_producto():
-    codigo = int(input("Ingrese el código del producto a actualizar: "))
-    if 
+    codigo = input("Ingrese el código del producto a actualizar: ")
+    if codigo in inventario_prueba:
+        
+        campos = {
+            'nombre' : (
+                "el nombre del producto", 
+                None,
+                lambda x: not x,
+                "El producto no puede ser vacío"
+            ),
+            'descripcion' : (
+                "la descripción del producto",
+                None,
+                lambda x: len(x) > 50,
+                lambda x: f"Se excedió en {len(x) - 50} caracteres, reescriba con hasta 100 caracteres."
+            ),
+            'cantidad' : (
+                "la cantidad de unidades",
+                int,
+                lambda x: x < 0,
+                "Debe ingresar al menos 0 unidades."
+            ),
+            'precio' : (
+                "el precio del producto",
+                float,
+                lambda x: x <= 0,
+                "El precio debe ser mayor a 0."
+            ),
+            'categoria' : (
+                "la categoría del producto",
+                None,
+                lambda x: not x,
+                "La categoría no puede ser vacía"
+            )
+        }
+
+        # campo es la clave (lo que evalúo modificar)
+        # la tupla es la desestructuración de los valores de cada tupla en el diccionario (las config para cada campo)
+        for campo, (msje,tipo,condicion,msje_error) in campos.items():
+            respuesta = input(f"Quiere actualizar {msje} (s/n): ")
+            if respuesta == 's':
+                nuevo_valor = ingreso_de_elemento(tipo,f"Ingrese {msje}",condicion,msje_error)
+                inventario_prueba[codigo][campo] = nuevo_valor
+
+        #para reutilizar mi función de impresión le paso un inventario k,v para que se imprima.        
+        print(imprimir_inventario_actual({codigo : inventario_prueba[codigo]}))
+    else:
+        print(f"{RED}No existe un producto con el código {MAGENTA}{codigo} {RED}en el inventario{RESET}")
+        
+
+def main():
+    actualizar_producto()
+
+if __name__ == '__main__':
+    main()
+          
     
