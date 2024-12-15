@@ -7,7 +7,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from utils.colorama_config import CYAN,YELLOW,MAGENTA,LIGHT_RED,RED, GREEN, RESET
 
 from mostrar_productos import inventario_prueba, imprimir_inventario_actual
-from registrar_producto import ingreso_de_elemento
 
 """
 Frecuentemente necesitamos conocer datos de un único producto. 
@@ -23,16 +22,16 @@ TIP: Si el código que se ingresa no está registrado, podemos avisar que no se 
 
 """
 
-def buscar_producto():
+def buscar_producto(inventario):
     codigo = input("Ingrese el código del producto buscado: ")
-    if codigo in inventario_prueba:
-        inventario_prueba.get(codigo)
-        imprimir_inventario_actual({codigo : inventario_prueba[codigo]})
+    if codigo in inventario:
+        inventario.get(codigo)
+        imprimir_inventario_actual({codigo : inventario[codigo]})
     else:
         print(f"{RED}No existe un producto asociado al código {codigo}.")
 
 def main():
-    buscar_producto()
+    buscar_producto(inventario_prueba)
 
 if __name__ == '__main__':
     main()

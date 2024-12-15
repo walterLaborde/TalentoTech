@@ -41,7 +41,7 @@ inventario_prueba = {
 inventario_vacio = dict()
 
 #imprime un inventario si existe, sino indica que está vacío
-def imprimir_inventario(inventario):
+def mostrar_producto(inventario):
     if not inventario:
         print(f"{RED} El inventario está vacío.{RESET}")
     else:
@@ -49,9 +49,9 @@ def imprimir_inventario(inventario):
 
 
 def main():
-    imprimir_inventario(inventario_prueba)
+    mostrar_producto(inventario_prueba)
     print()
-    imprimir_inventario(inventario_vacio)
+    mostrar_producto(inventario_vacio)
 
 if __name__ == '__main__':
     main()

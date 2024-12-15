@@ -107,7 +107,7 @@ def registrar_producto():
         indice += 1
 
         # pregunto si quiere seguir ingresando otro producto, sino, termino el programa
-        continuar = input(f"Desea seguir ingresando otro producto? [S/N]. Sscriba S para continuar o N para salir.").strip().lower()
+        continuar = input(f"Desea seguir ingresando otro producto? [S/N].").strip().lower()
 
         if continuar != "s":
             break

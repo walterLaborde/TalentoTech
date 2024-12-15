@@ -24,17 +24,17 @@ en actualizar_producto()
 
 """
 
-def eliminar_producto():
+def eliminar_producto(inventario):
     codigo = input("Ingrese el código del producto a eliminar (esta operación no se puede deshacer): ")
-    if codigo in inventario_prueba:
-        prod_a_eliminar = {codigo : inventario_prueba[codigo]}
+    if codigo in inventario:
+        prod_a_eliminar = {codigo : inventario[codigo]}
     
         print(f"{RED}El producto con código {codigo} que se eliminará es: {RESET}")
         imprimir_inventario_actual(prod_a_eliminar)
 
         confirmacion = input(f"{YELLOW}Está seguro que desea eleminar ese producto del inventario (s/n): ").strip().lower()
         if confirmacion == 's':
-            inventario_prueba.pop(codigo)
+            inventario.pop(codigo)
             print(f"{MAGENTA}El producto fue eliminado correctamente.{RESET}")
         else:
             print(f"{CYAN}Eliminación cancelada.{RESET}")
@@ -42,7 +42,7 @@ def eliminar_producto():
         print(f"{RED}No existe un producto asociado al código {codigo}.")
 
 def main():
-    eliminar_producto()
+    eliminar_producto(inventario_prueba)
 
 if __name__ == '__main__':
     main()

@@ -26,9 +26,9 @@ Por supuesto, ¡puedes agregar todas las funcionalidades extra que consideres ne
 """
 
 # La función supone que se conoce el código del producto a actualizar.
-def actualizar_producto():
+def actualizar_producto(inventario):
     codigo = input("Ingrese el código del producto a actualizar: ")
-    if codigo in inventario_prueba:
+    if codigo in inventario:
         
         campos = {
             'nombre' : (
@@ -69,16 +69,16 @@ def actualizar_producto():
             respuesta = input(f"Quiere actualizar {msje} (s/n): ")
             if respuesta == 's':
                 nuevo_valor = ingreso_de_elemento(tipo,f"Ingrese {msje}",condicion,msje_error)
-                inventario_prueba[codigo][campo] = nuevo_valor
+                inventario[codigo][campo] = nuevo_valor
 
         #para reutilizar mi función de impresión le paso un inventario k,v para que se imprima.        
-        print(imprimir_inventario_actual({codigo : inventario_prueba[codigo]}))
+        print(imprimir_inventario_actual({codigo : inventario[codigo]}))
     else:
         print(f"{RED}No existe un producto con el código {MAGENTA}{codigo} {RED}en el inventario{RESET}")
         
 
 def main():
-    actualizar_producto()
+    actualizar_producto(inventario_prueba)
 
 if __name__ == '__main__':
     main()
