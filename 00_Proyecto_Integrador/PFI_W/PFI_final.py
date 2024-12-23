@@ -89,7 +89,7 @@ def ingreso_de_elemento(tipo: type,msje_ingreso: str,condicion: callable,msje_er
         except ValueError as e:
             print(f"{RED}{e}{RESET}")
 
-# función genérica para imprimir todos los productos (params=None) o uno en especifico (id)
+# función genérica para imprimir todos los productos
 def imprmir_productos(datos=None):
     if datos is None:    
         conn = conectar_db()
@@ -242,11 +242,11 @@ def eliminar_producto():
         try:
             cur = conn.cursor()
             cur.execute("SELECT * FROM productos WHERE id = ?",(codigo,))
-            res = cur.fetchone()
+            res = cur.fetchall()
             if res:
                 print(f"{RED}El producto con código {codigo} que se eliminará es: {RESET}")
                 # imprimo el producto a eliminar
-                imprmir_productos(codigo)
+                imprmir_productos(res)
                 # pido confirmación de borrado
                 confirmacion = input(f"{YELLOW}Está seguro que desea eleminar ese producto del inventario (s/n): ").strip().lower()
                 if confirmacion == 's':
