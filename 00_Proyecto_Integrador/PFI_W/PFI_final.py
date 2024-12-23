@@ -40,7 +40,7 @@ def ejecutar_query(query,params=None):
             if params:
                 cur.execute(query,params)
             else:
-                cur.execute(query,None)
+                cur.execute(query)
             conn.commit()
             print("Operación realizada con éxito.")
         except sqlite3.Error as e:
@@ -90,53 +90,55 @@ def ingreso_de_elemento(tipo: type,msje_ingreso: str,condicion: callable,msje_er
             print(f"{RED}{e}{RESET}")
 
 # función genérica para imprimir todos los productos (params=None) o uno en especifico (id)
-def imprmir_productos(id=None):
-    conn = conectar_db()
-    try:
-        cur = conn.cursor()
-        query = "SELECT * FROM productos"
-        params = None
+def imprmir_productos(datos=None):
+    if datos is None:    
+        conn = conectar_db()
+        try:
+            cur = conn.cursor()
+            query = "SELECT * FROM productos"
+            cur.execute(query)
+            datos = cur.fetchall()
 
-        if id is not None:
-            query += "WHERE id = ?"
-            params = (id,)
-        
-        cur.execute(query,params)
-        filas = cur.fetchall()
-        # mensaje si está vacía la tabla
-        if not filas:
-            print(f"{RED}No se encontraron productos asociados al id: {id}{RESET}" if id is not None else f"{RED}La tabla productos está vacía{RESET}")
+            if not datos:
+                print(f"{RED}La tabla productos está vacía.{RESET}")
+                return
+             
+        except sqlite3.Error as e:
+            print(f"{RED}Error al imprimir la tabla: {e}{RESET}")
             return
+
+        finally:
+            if cur:
+                cur.close()
+            conn.close()
         
-        # esto me da una lista con los nombres de los campos
-        nombres_columnas = [descripcion[0] for descripcion in cur.description()]
-        
-        # esto calcula el ancho de la columna para que esté alineada, es el máximo entre el título y el contenido
-        # acá obtengo el largo de cada nombre de campo
-        ancho_columna = [len(nombre) for nombre in nombres_columnas]
-        # acá obtengo el máximo entre el largo del nombre y el largo del string del valor ingresado 
-        for fila in filas:
+    if not datos:
+        print(f"{RED}No se encontraron productos para mostrar.{RESET}")
+        return
+
+    nombres_columnas = ['id','nombre','descripción','cantidad','precio','categoría']
+
+    # esto calcula el ancho de la columna para que esté alineada, es el máximo entre el título y el contenido
+    # acá obtengo el largo de cada nombre de campo
+    ancho_columna = [len(nombre) for nombre in nombres_columnas]
+    # acá obtengo el máximo entre el largo del nombre y el largo del string del valor ingresado 
+    if datos:
+        for fila in datos:
             for i, valor in enumerate(fila):
                     ancho_columna[i] = max(ancho_columna[i],len(str(valor)))
-        
+
         # imprimo el encabezado con cada título separado por | y, una línea como separador con la forma ----...
         for i, nombre in enumerate(nombres_columnas):
-            print(f"{GREEN}{nombre:<{ancho_columna[i]}}, end={YELLOW}' | '{RESET}") # encabezados + |
-            print()
-            print(f"{YELLOW}-{RESET}" * (sum(ancho_columna) + 3 * len(ancho_columna)-1)) # separador -----....
-        
+            print(f"{GREEN}{nombre:<{ancho_columna[i]}}", end=f"{YELLOW} | {RESET}") # encabezados + |
+        print()
+        print(f"{YELLOW}-{RESET}" * (sum(ancho_columna) + 3 * len(ancho_columna)-1)) # separador -----....
+
         # imprimo el contenido de cada fila + el separador
-        for fila in enumerate(filas):
-            for i, valor in fila:
-                print(f"{MAGENTA}{valor:<{ancho_columna[i]}}, end={YELLOW}' | '{RESET}")
+        for fila in datos:
+            for i, valor in enumerate(fila):
+                print(f"{MAGENTA}{valor:<{ancho_columna[i]}}", end=f"{YELLOW} | {RESET}")
             print()
-    
-    except sqlite3.Error as e:
-        print(f"{RED}Error al imprimir la tabla: {e}{RESET}")
-    
-    finally:
-        cur.close()
-        conn.close()
+
 
 
 #######################################
@@ -144,7 +146,6 @@ def imprmir_productos(id=None):
 #######################################
 
 def agregar_producto():
-
     while True:
         # tomo los datos del producto y los valido para que estén ok
         nombre = ingreso_de_elemento(
@@ -184,7 +185,7 @@ def agregar_producto():
 
         # genero la query para ingresar los productos
         query = """
-            INSERT INTO inventario (nombre,descripcion,cantidad,precio,categoria)
+            INSERT INTO productos (nombre,descripcion,cantidad,precio,categoria)
             VALUES (?,?,?,?,?)
         """
         # llamo a la función para que se encargue de ingresarlos
@@ -197,12 +198,10 @@ def agregar_producto():
         if continuar != "s":
             break
 
-
 # Muestra todos los registros de la tabla productos
 def mostrar_productos():
-    imprmir_productos(None)
+    imprmir_productos()
             
-
 # PROPÓSITO: actualiza la cantidad de producto de un registro
 # PRECONDICIÓN: La función supone que se conoce el código del producto a actualizar.
 def actualizar_producto():
@@ -217,7 +216,7 @@ def actualizar_producto():
         try:
             cur = conn.cursor()
             cur.execute("SELECT * FROM productos WHERE id = ?",(codigo,))
-            res = cur.fetchone()
+            res = cur.fetchall()
             if res:
                 nuevo_valor = ingreso_de_elemento(int,f"Ingrese la cantidad actualizada",lambda x: x < 0,"Debe ingresar al menos 0 unidades.")
                 query = "UPDATE productos SET cantidad = ? WHERE id = ?"
@@ -231,28 +230,9 @@ def actualizar_producto():
         
 # PROPÓSITO: Elimina un regstro de la base de datos a partir de su ID
 # PRECONDICIÓN: La función supone que se conoce el código del producto a actualizar.
-def eliminar_producto(id):
-    codigo = int(input("Ingrese el código del producto a eliminar: "))
-    cod_en_db = ejecutar_query(f"SELECT id FROM productos WHERE id = {codigo}")
-    if cod_en_db:
-        print(f"{RED}El producto con código {codigo} que se eliminará es: {RESET}")
-        # imprimo el producto a eliminar
-        mostrar_productos(codigo)
-        # pido confirmación de borrado
-        confirmacion = input(f"{YELLOW}Está seguro que desea eleminar ese producto del inventario (s/n): ").strip().lower()
-        if confirmacion == 's':
-            query = "DELETE * FROM productos WHERE id = ?"
-            params = (id,)
-            ejecutar_query(query,id)
-
-            print(f"{MAGENTA}El producto fue eliminado correctamente.{RESET}")
-        else:
-            print(f"{CYAN}Eliminación cancelada.{RESET}")
-
-
 def eliminar_producto():
     try:
-      codigo = int(input("Ingrese el código del producto a actualizar: "))
+      codigo = int(input("Ingrese el código del producto a eliminar: "))
     except ValueError:
         print(f"{RED}Código inválido. Debe ser un número entero.{RESET}")
         return
@@ -266,13 +246,13 @@ def eliminar_producto():
             if res:
                 print(f"{RED}El producto con código {codigo} que se eliminará es: {RESET}")
                 # imprimo el producto a eliminar
-                mostrar_productos(codigo)
+                imprmir_productos(codigo)
                 # pido confirmación de borrado
                 confirmacion = input(f"{YELLOW}Está seguro que desea eleminar ese producto del inventario (s/n): ").strip().lower()
                 if confirmacion == 's':
-                    query = "DELETE * FROM productos WHERE id = ?"
-                    params = (id,)
-                    ejecutar_query(query,id)
+                    query = "DELETE FROM productos WHERE id = ?"
+                    params = (codigo,)
+                    ejecutar_query(query,params)
                     print(f"{MAGENTA}El producto fue eliminado correctamente.{RESET}")
                 else:
                     print(f"{CYAN}Eliminación cancelada.{RESET}")
@@ -280,17 +260,34 @@ def eliminar_producto():
                 conn.rollback()
                 print(f"{RED}Error al querer eliminar el producto {e}.{RESET}")
         finally:
-                cur.close()
+                if cur:
+                    cur.close()
                 conn.close()
 
 # busca el producto por su id 
 def buscar_producto():
     try:
-      codigo = int(input("Ingrese el código del producto a actualizar: "))
+      codigo = int(input("Ingrese el código del producto a buscar: "))
     except ValueError:
         print(f"{RED}Código inválido. Debe ser un número entero.{RESET}")
         return
-    imprmir_productos(codigo)
+    
+    conn = conectar_db()
+    try:
+        cur = conn.cursor()
+        query = "SELECT * FROM productos WHERE id = ?"
+        cur.execute(query,(codigo,))
+        datos = cur.fetchall()
+
+        imprmir_productos(datos)
+    
+    except sqlite3.Error as e:
+        print(f"{RED}Error al buscar el producto {e}.{RESET}")
+
+    finally:
+        if cur:
+            cur.close()
+        conn.close()
 
 # busca todos los productos cuyo stock sea menor o igual al límite ingresado 
 def reporte_bajo_stock():
@@ -302,9 +299,26 @@ def reporte_bajo_stock():
         print(f"{RED}{e}{RESET}")
         return
     
-    query = "SELECT * FROMO productos WHERE cantidad <= ?"
-    params = (limite,)
-    ejecutar_query(query,params)
+    conn = conectar_db()
+    try:
+        cur = conn.cursor()
+        query = "SELECT * FROM productos WHERE cantidad <= ?"
+        cur.execute(query, (limite,))
+        filtro = cur.fetchall()
+
+        if filtro:
+            print(f"{GREEN}Productos con stock menor o igual a {limite}.{RESET}")
+            imprmir_productos(filtro)
+        else:
+            print(f"{YELLOW}No hay productos con stock menor o igual a {limite}.{RESET}")
+
+    except sqlite3.Error as e:
+        print(f"{RED}Error al realizar la consulta: {e}{RESET}")
+    
+    finally:
+        if cur:
+            cur.close()
+        conn.close()
 
 ####################
 # MENÚ INTERACTIVO #       
@@ -331,7 +345,7 @@ def menu():
             agregar_producto()
 
         elif opcion == "2":
-            mostrar_productos(None)
+            mostrar_productos()
 
         elif opcion == "3":
             actualizar_producto()
@@ -350,10 +364,8 @@ def menu():
 
         else: print(f"{RED}\nIngreso inválido. Seleccione una opción correcta{RESET}")
 
-
-
-
 def main():
+    crear_tabla_productos()
     menu()
 
 if __name__ == '__main__':
